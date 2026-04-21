@@ -1,4 +1,4 @@
-package org.Pazano.virtualBank;
+package org.Pazano.virtualBank.application;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
