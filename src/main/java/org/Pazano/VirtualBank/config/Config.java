@@ -1,12 +1,12 @@
-package org.Pazano.virtualBank.config;
+package org.Pazano.VirtualBank.config;
 
-import org.Pazano.virtualBank.entities.Account;
-import org.Pazano.virtualBank.entities.Transaction;
-import org.Pazano.virtualBank.entities.TransactionType;
-import org.Pazano.virtualBank.entities.User;
-import org.Pazano.virtualBank.repository.AccountRepository;
-import org.Pazano.virtualBank.repository.TransactionRepository;
-import org.Pazano.virtualBank.repository.UserRepository;
+import org.Pazano.VirtualBank.entities.Account;
+import org.Pazano.VirtualBank.entities.Transaction;
+import org.Pazano.VirtualBank.entities.TransactionType;
+import org.Pazano.VirtualBank.entities.User;
+import org.Pazano.VirtualBank.repository.AccountRepository;
+import org.Pazano.VirtualBank.repository.TransactionRepository;
+import org.Pazano.VirtualBank.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;

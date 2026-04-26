@@ -1,6 +1,6 @@
-package org.Pazano.virtualBank.repository;
+package org.Pazano.VirtualBank.repository;
 
-import org.Pazano.virtualBank.entities.User;
+import org.Pazano.VirtualBank.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {

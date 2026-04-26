@@ -1,4 +1,4 @@
-package org.Pazano.virtualBank.entities;
+package org.Pazano.VirtualBank.entities;
 
 import jakarta.persistence.*;
 

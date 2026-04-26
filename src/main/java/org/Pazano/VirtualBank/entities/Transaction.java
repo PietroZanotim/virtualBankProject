@@ -1,4 +1,4 @@
-package org.Pazano.virtualBank.entities;
+package org.Pazano.VirtualBank.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -1,7 +1,7 @@
-package org.Pazano.virtualBank.service;
+package org.Pazano.VirtualBank.service;
 
-import org.Pazano.virtualBank.entities.User;
-import org.Pazano.virtualBank.repository.UserRepository;
+import org.Pazano.VirtualBank.entities.User;
+import org.Pazano.VirtualBank.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserService {
