@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_account")
@@ -20,7 +21,7 @@ public class Account {
     @MapsId
     private User user;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "senderAccount")
     private List<Transaction> transactions;
 
     public Account() {
@@ -32,5 +33,51 @@ public class Account {
         this.user = user;
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(Long accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Objects.equals(id, account.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

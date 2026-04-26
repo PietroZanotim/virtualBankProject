@@ -3,6 +3,7 @@ package org.Pazano.VirtualBank.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.Pazano.VirtualBank.entities.enums.TransactionType;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -12,6 +13,7 @@ import java.time.Instant;
 public class Transaction {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")

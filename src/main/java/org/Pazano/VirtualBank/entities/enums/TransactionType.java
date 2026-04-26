@@ -1,4 +1,4 @@
-package org.Pazano.VirtualBank.entities;
+package org.Pazano.VirtualBank.entities.enums;
 
 public enum TransactionType {
 

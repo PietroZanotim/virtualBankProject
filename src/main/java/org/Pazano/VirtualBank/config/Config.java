@@ -2,7 +2,7 @@ package org.Pazano.VirtualBank.config;
 
 import org.Pazano.VirtualBank.entities.Account;
 import org.Pazano.VirtualBank.entities.Transaction;
-import org.Pazano.VirtualBank.entities.TransactionType;
+import org.Pazano.VirtualBank.entities.enums.TransactionType;
 import org.Pazano.VirtualBank.entities.User;
 import org.Pazano.VirtualBank.repository.AccountRepository;
 import org.Pazano.VirtualBank.repository.TransactionRepository;
