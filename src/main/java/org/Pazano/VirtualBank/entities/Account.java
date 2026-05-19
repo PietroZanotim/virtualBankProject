@@ -33,6 +33,15 @@ public class Account {
         this.user = user;
     }
 
+    @PrePersist
+    public void generateAccountNumber() {
+        if(accountNumber==null) {
+            long min = 100000L;
+            long max = 999999L;
+            this.accountNumber = min + (long) (Math.random() * (max - min + 1));
+        }
+    }
+
     public Long getId() {
         return id;
     }

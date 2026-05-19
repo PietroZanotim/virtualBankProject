@@ -34,6 +34,9 @@ public class Config implements CommandLineRunner {
         User u2 = new User(null, "Ana", "111.111.111-11", "ana@gmail.com", "20", "456", null);
         userRepository.saveAll(Arrays.asList(u1, u2));
 
+        System.out.println(u1.toString());
+        System.out.println(u2.toString());
+
         Account a1 = new Account(null, new BigDecimal(0.00), u1);
         Account a2 = new Account(null, new BigDecimal(0.00), u2);
         accountRepository.saveAll(Arrays.asList(a1,a2));
