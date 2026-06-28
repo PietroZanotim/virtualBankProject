@@ -2,14 +2,17 @@ package org.Pazano.VirtualBank.resource;
 
 import org.Pazano.VirtualBank.entities.Account;
 import org.Pazano.VirtualBank.entities.Transaction;
+import org.Pazano.VirtualBank.entities.User;
 import org.Pazano.VirtualBank.service.AccountService;
 import org.Pazano.VirtualBank.service.TransactionService;
+import org.Pazano.VirtualBank.service.exceptions.InsufficientBalanceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.naming.InsufficientResourcesException;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -29,6 +32,15 @@ public class TransactionResource {
     public ResponseEntity<Transaction> findById(Long id) {
         Transaction transaction = transactionService.findById(id);
         return ResponseEntity.ok().body(transaction);
+    }
+
+    @PostMapping
+    public ResponseEntity<Transaction> insert(@RequestBody Transaction obj) throws InsufficientBalanceException {
+        obj = transactionService.insert(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(obj.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(obj);
     }
 
 }

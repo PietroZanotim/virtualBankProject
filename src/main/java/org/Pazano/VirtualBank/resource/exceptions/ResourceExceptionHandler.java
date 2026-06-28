@@ -2,6 +2,7 @@ package org.Pazano.VirtualBank.resource.exceptions;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.Pazano.VirtualBank.service.exceptions.DataBaseException;
+import org.Pazano.VirtualBank.service.exceptions.InsufficientBalanceException;
 import org.Pazano.VirtualBank.service.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,14 @@ public class ResourceExceptionHandler {
     @ExceptionHandler(DataBaseException.class)
     public ResponseEntity<StandardError> database(DataBaseException e, HttpServletRequest request) {
         String error = "Database error";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(InsufficientBalanceException.class)
+    public ResponseEntity<StandardError> insufficientBalance(InsufficientBalanceException e, HttpServletRequest request) {
+        String error = "Sender insufficient balance";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);

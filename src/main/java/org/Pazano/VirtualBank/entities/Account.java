@@ -80,6 +80,14 @@ public class Account {
         return transactions;
     }
 
+    public void withdraw(BigDecimal value) {
+        balance = balance.subtract(value);
+    }
+
+    public void deposit(BigDecimal value) {
+        balance = balance.add(value);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
