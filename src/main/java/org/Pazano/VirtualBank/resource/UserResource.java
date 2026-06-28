@@ -2,6 +2,7 @@ package org.Pazano.VirtualBank.resource;
 
 import org.Pazano.VirtualBank.entities.User;
 import org.Pazano.VirtualBank.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -13,6 +14,7 @@ import java.util.List;
 @RequestMapping(value = "/user")
 public class UserResource {
 
+    @Autowired
     private UserService userService;
 
     @GetMapping

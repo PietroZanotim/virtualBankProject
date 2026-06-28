@@ -41,8 +41,8 @@ public class Config implements CommandLineRunner {
         Account a2 = new Account(null, new BigDecimal(0.00), u2);
         accountRepository.saveAll(Arrays.asList(a1,a2));
 
-        Transaction t1 = new Transaction(null, Instant.parse("2026-04-21T17:42:37Z"), u1.getAccount(), u2.getName(), u2.getCpf(), TransactionType.PIX, new BigDecimal(500.00));
-        Transaction t2 = new Transaction(null, Instant.parse("2026-04-21T19:52:16Z"), u2.getAccount(), u1.getName(), u1.getCpf(), TransactionType.PIX, new BigDecimal(200.00));
+        Transaction t1 = new Transaction(null, Instant.parse("2026-04-21T17:42:37Z"), a1, u2.getName(), u2.getCpf(), TransactionType.PIX, new BigDecimal(500.00));
+        Transaction t2 = new Transaction(null, Instant.parse("2026-04-21T19:52:16Z"), a2, u1.getName(), u1.getCpf(), TransactionType.PIX, new BigDecimal(200.00));
 
         transactionRepository.saveAll(Arrays.asList(t1, t2));
 

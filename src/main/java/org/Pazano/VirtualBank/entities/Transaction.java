@@ -60,7 +60,6 @@ public class Transaction {
         this.data = data;
     }
 
-    @JsonIgnore
     public Account getSenderAccount() {
         return senderAccount;
     }

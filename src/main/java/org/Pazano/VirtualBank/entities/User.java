@@ -1,5 +1,6 @@
 package org.Pazano.VirtualBank.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -18,6 +19,7 @@ public class User {
     private String age;
     private String password;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Account account;
 

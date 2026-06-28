@@ -1,5 +1,6 @@
 package org.Pazano.VirtualBank.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -74,6 +75,7 @@ public class Account {
         this.user = user;
     }
 
+    @JsonIgnore
     public List<Transaction> getTransactions() {
         return transactions;
     }
