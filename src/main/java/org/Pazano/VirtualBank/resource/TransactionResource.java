@@ -29,7 +29,7 @@ public class TransactionResource {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Transaction> findById(Long id) {
+    public ResponseEntity<Transaction> findById(@PathVariable Long id) {
         Transaction transaction = transactionService.findById(id);
         return ResponseEntity.ok().body(transaction);
     }
