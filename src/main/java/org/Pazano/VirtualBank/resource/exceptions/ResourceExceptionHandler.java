@@ -1,6 +1,7 @@
 package org.Pazano.VirtualBank.resource.exceptions;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.Pazano.VirtualBank.service.exceptions.BusinessRuleException;
 import org.Pazano.VirtualBank.service.exceptions.DataBaseException;
 import org.Pazano.VirtualBank.service.exceptions.InsufficientBalanceException;
 import org.Pazano.VirtualBank.service.exceptions.ResourceNotFoundException;
@@ -33,6 +34,22 @@ public class ResourceExceptionHandler {
     @ExceptionHandler(InsufficientBalanceException.class)
     public ResponseEntity<StandardError> insufficientBalance(InsufficientBalanceException e, HttpServletRequest request) {
         String error = "Sender insufficient balance";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<StandardError> illegalArgument(IllegalArgumentException e, HttpServletRequest request) {
+        String error = "Illegal transactional value";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<StandardError> businessRuleException(BusinessRuleException e, HttpServletRequest request) {
+        String error = "Business rule exception";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
