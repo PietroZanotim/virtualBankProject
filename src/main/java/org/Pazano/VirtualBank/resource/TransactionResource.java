@@ -1,5 +1,7 @@
 package org.Pazano.VirtualBank.resource;
 
+import org.Pazano.VirtualBank.dto.TransactionRequestDTO;
+import org.Pazano.VirtualBank.dto.TransactionResponseDTO;
 import org.Pazano.VirtualBank.entities.Account;
 import org.Pazano.VirtualBank.entities.Transaction;
 import org.Pazano.VirtualBank.entities.User;
@@ -35,12 +37,12 @@ public class TransactionResource {
     }
 
     @PostMapping
-    public ResponseEntity<Transaction> insert(@RequestBody Transaction obj) throws InsufficientBalanceException {
-        obj = transactionService.insert(obj);
+    public ResponseEntity<TransactionResponseDTO> insert(@RequestBody TransactionRequestDTO obj) throws InsufficientBalanceException {
+        TransactionResponseDTO dtoResponse = transactionService.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(obj.getId()).toUri();
+                .buildAndExpand(dtoResponse.getTransactionId()).toUri();
 
-        return ResponseEntity.created(uri).body(obj);
+        return ResponseEntity.created(uri).body(dtoResponse);
     }
 
 }

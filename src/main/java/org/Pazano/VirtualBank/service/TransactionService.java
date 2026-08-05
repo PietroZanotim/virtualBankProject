@@ -1,6 +1,8 @@
 package org.Pazano.VirtualBank.service;
 
 import jakarta.transaction.Transactional;
+import org.Pazano.VirtualBank.dto.TransactionRequestDTO;
+import org.Pazano.VirtualBank.dto.TransactionResponseDTO;
 import org.Pazano.VirtualBank.entities.Account;
 import org.Pazano.VirtualBank.entities.Transaction;
 import org.Pazano.VirtualBank.entities.User;
@@ -40,37 +42,52 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction insert(Transaction transaction) throws InsufficientBalanceException {
+    public TransactionResponseDTO insert(TransactionRequestDTO transactionRequestDTO) throws InsufficientBalanceException {
 
-        Account senderAccount = accountRepository.findById(transaction.getSenderAccount().getId())
+        Account senderAccount = accountRepository.findById(transactionRequestDTO.getSenderAccountId())
                 .orElseThrow(() -> new ResourceNotFoundException("Sender account not found."));
 
         //Insufficient balance
-        if(senderAccount.getBalance().compareTo(transaction.getTotal())<0) {
+        if(senderAccount.getBalance().compareTo(transactionRequestDTO.getTotal())<0) {
             throw new InsufficientBalanceException("Insufficient balance!");
         }
         //Negative value
-        if(transaction.getTotal().compareTo(BigDecimal.ZERO)<0) {
+        if(transactionRequestDTO.getTotal().compareTo(BigDecimal.ZERO)<0) {
             throw new IllegalArgumentException("Negative value!");
         }
         //Same account sender and receiver
-        if(transaction.getReceiverCpf().equals(transaction.getSenderAccount().getUser().getCpf())){
+        if(transactionRequestDTO.getReceiverCpf().equals(senderAccount.getUser().getCpf())){
             throw new BusinessRuleException("Invalid receiver account!");
         }
 
+        senderAccount.withdraw(transactionRequestDTO.getTotal()); //withdraw the value;
 
-        senderAccount.withdraw(transaction.getTotal()); //withdraw the value;
-
-        User user = userRepository.findByCpf(transaction.getReceiverCpf())
+        User user = userRepository.findByCpf(transactionRequestDTO.getReceiverCpf())
                 .orElseThrow(() -> new ResourceNotFoundException("Receiver not found."));
 
         Account accountReceiver = user.getAccount();
-        accountReceiver.deposit(transaction.getTotal());
+        accountReceiver.deposit(transactionRequestDTO.getTotal());
 
-        transaction.setSenderAccount(senderAccount);
-        transaction.setData(Instant.now());
+        Transaction transactionDatabase = new Transaction(null,
+                Instant.now(),
+                senderAccount,
+                accountReceiver.getUser().getName(),
+                accountReceiver.getUser().getCpf(),
+                transactionRequestDTO.getTransactionType(),
+                transactionRequestDTO.getTotal()
+        );
 
-        return transactionRepository.save(transaction);
+
+        transactionRepository.save(transactionDatabase);
+
+        TransactionResponseDTO transactionResponseDTO = new TransactionResponseDTO(
+                transactionDatabase.getId(),
+                accountReceiver.getUser().getName(),
+                transactionRequestDTO.getTotal(),
+                transactionDatabase.getData()
+        );
+
+        return transactionResponseDTO;
     }
 
 }

@@ -1,5 +1,7 @@
 package org.Pazano.VirtualBank.dto;
 
+import org.Pazano.VirtualBank.entities.enums.TransactionType;
+
 import java.math.BigDecimal;
 
 public class TransactionRequestDTO {
@@ -7,14 +9,16 @@ public class TransactionRequestDTO {
     private Long senderAccountId;
     private BigDecimal total;
     private String receiverCpf;
+    TransactionType transactionType;
 
     public TransactionRequestDTO() {
     }
 
-    public TransactionRequestDTO(Long senderAccountId, BigDecimal total, String receiverCpf) {
+    public TransactionRequestDTO(Long senderAccountId, BigDecimal total, String receiverCpf, TransactionType transactionType) {
         this.senderAccountId = senderAccountId;
         this.total = total;
         this.receiverCpf = receiverCpf;
+        this.transactionType = transactionType;
     }
 
     public Long getSenderAccountId() {
@@ -39,5 +43,13 @@ public class TransactionRequestDTO {
 
     public void setReceiverCpf(String receiverCpf) {
         this.receiverCpf = receiverCpf;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
     }
 }
