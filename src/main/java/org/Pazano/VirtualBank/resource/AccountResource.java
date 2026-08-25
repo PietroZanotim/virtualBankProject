@@ -1,5 +1,6 @@
 package org.Pazano.VirtualBank.resource;
 
+import org.Pazano.VirtualBank.dto.AccountResponseDTO;
 import org.Pazano.VirtualBank.entities.Account;
 import org.Pazano.VirtualBank.service.AccountService;
 import org.Pazano.VirtualBank.service.UserService;
@@ -20,8 +21,8 @@ public class AccountResource {
     private AccountService AccountService;
 
     @GetMapping
-    public ResponseEntity<List<Account>> findAll() {
-        List<Account> list = AccountService.findAll();
+    public ResponseEntity<List<AccountResponseDTO>> findAll() {
+        List<AccountResponseDTO> list = AccountService.findAll();
         return ResponseEntity.ok().body(list);
     }
 

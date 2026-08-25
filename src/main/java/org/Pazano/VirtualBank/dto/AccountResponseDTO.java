@@ -8,6 +8,15 @@ public class AccountResponseDTO {
     private BigDecimal balance;
     private UserResponseDTO userResponseDTO;
 
+    public AccountResponseDTO() {
+    }
+
+    public AccountResponseDTO(Long accountNumber, BigDecimal balance, UserResponseDTO userResponseDTO) {
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+        this.userResponseDTO = userResponseDTO;
+    }
+
     public Long getAccountNumber() {
         return accountNumber;
     }

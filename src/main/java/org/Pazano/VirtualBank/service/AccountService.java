@@ -1,6 +1,8 @@
 package org.Pazano.VirtualBank.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.Pazano.VirtualBank.dto.AccountResponseDTO;
+import org.Pazano.VirtualBank.dto.UserResponseDTO;
 import org.Pazano.VirtualBank.entities.Account;
 import org.Pazano.VirtualBank.entities.Transaction;
 import org.Pazano.VirtualBank.entities.User;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +24,23 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public List<Account> findAll() {
-        return accountRepository.findAll();
+    public List<AccountResponseDTO> findAll() {
+        List<Account> list = accountRepository.findAll();
+        if(list.isEmpty()) throw new DataBaseException("Null");
+        List<AccountResponseDTO> accountResponseDTOList = new ArrayList<>();
+
+        for(Account a : list) {
+            UserResponseDTO userResponseDTO = new UserResponseDTO();
+
+            AccountResponseDTO accountResponseDTO = new AccountResponseDTO(
+                    a.getAccountNumber(),
+                    a.getBalance(),
+                    userResponseDTO
+            );
+
+            accountResponseDTOList.add(accountResponseDTO);
+        }
+        return accountResponseDTOList;
     }
 
     public Account findById(Long id) {

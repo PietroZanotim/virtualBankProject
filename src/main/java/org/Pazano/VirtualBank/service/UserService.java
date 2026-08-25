@@ -1,6 +1,8 @@
 package org.Pazano.VirtualBank.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.Pazano.VirtualBank.dto.UserRequestDTO;
+import org.Pazano.VirtualBank.dto.UserResponseDTO;
 import org.Pazano.VirtualBank.entities.User;
 import org.Pazano.VirtualBank.repository.UserRepository;
 import org.Pazano.VirtualBank.service.exceptions.DataBaseException;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,25 +21,67 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserResponseDTO> findAll() {
+        List<User> list = userRepository.findAll();
+        if(list.isEmpty()) throw new DataBaseException("Null");
+        List<UserResponseDTO> userResponseDTOList = new ArrayList<>();
+        for(User u : list) {
+            UserResponseDTO userResponseDTO = new UserResponseDTO(
+                    u.getId(),
+                    u.getName(),
+                    u.getCpf(),
+                    u.getEmail(),
+                    u.getAge()
+            );
+            userResponseDTOList.add(userResponseDTO);
+        }
+        return userResponseDTOList;
     }
 
-    public User findById(Long id) {
+    public UserResponseDTO findById(Long id) {
         Optional<User> obj = userRepository.findById(id);
-        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+        if(obj.isEmpty()) throw new ResourceNotFoundException(id);
+        User user = obj.get();
+
+        UserResponseDTO userResponseDTO = new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getCpf(),
+                user.getEmail(),
+                user.getAge()
+        );
+        return userResponseDTO;
     }
 
-    public User insert(User user){
-        return userRepository.save(user);
+    public UserResponseDTO insert(UserRequestDTO user){
+        User userData = new User(null, user.getName(),user.getCpf(), user.getEmail(), user.getAge(), user.getPassword(),null);
+        userRepository.save(userData);
+
+        UserResponseDTO userResponseDTO = new UserResponseDTO(
+                userData.getId(),
+                user.getName(),
+                user.getCpf(),
+                user.getEmail(),
+                user.getAge()
+        );
+        return userResponseDTO;
     }
 
-    public User update(Long id, User user) {
+    public UserResponseDTO update(Long id, UserRequestDTO user) {
 
         try {
             User selected = userRepository.getReferenceById(id);
             updateData(selected, user);
-            return userRepository.save(selected);
+            userRepository.save(selected);
+
+            return new UserResponseDTO(
+                    id,
+                    selected.getName(),
+                    selected.getEmail(),
+                    selected.getEmail(),
+                    selected.getAge()
+            );
+
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(e);
         }
@@ -54,10 +99,11 @@ public class UserService {
         }
     }
 
-    private void updateData(User selectedUser, User newUser) {
+    private void updateData(User selectedUser, UserRequestDTO newUser) {
         selectedUser.setName(newUser.getName());
         selectedUser.setEmail(newUser.getEmail());
         selectedUser.setAge(newUser.getAge());
+        selectedUser.setPassword(newUser.getPassword());
     }
 
 }

@@ -1,5 +1,8 @@
 package org.Pazano.VirtualBank.resource;
 
+import jakarta.validation.Valid;
+import org.Pazano.VirtualBank.dto.UserRequestDTO;
+import org.Pazano.VirtualBank.dto.UserResponseDTO;
 import org.Pazano.VirtualBank.entities.User;
 import org.Pazano.VirtualBank.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,24 +21,24 @@ public class UserResource {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll() {
-        List<User> list = userService.findAll();
+    public ResponseEntity<List<UserResponseDTO>> findAll() {
+        List<UserResponseDTO> list = userService.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id) {
-        User obj = userService.findById(id);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
+        UserResponseDTO userResponseDTO = userService.findById(id);
+        return ResponseEntity.ok().body(userResponseDTO);
     }
 
     @PostMapping
-    public ResponseEntity<User> insert(@RequestBody User obj) {
-        obj = userService.insert(obj);
+    public ResponseEntity<UserResponseDTO> insert(@Valid @RequestBody UserRequestDTO obj) {
+        UserResponseDTO userResponseDTO = userService.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(obj.getId()).toUri();
+                .buildAndExpand(userResponseDTO.getId()).toUri();
 
-        return ResponseEntity.created(uri).body(obj);
+        return ResponseEntity.created(uri).body(userResponseDTO);
     }
 
     @DeleteMapping(value = "{id}")
@@ -45,9 +48,9 @@ public class UserResource {
     }
 
     @PutMapping(value = "{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user){
-        User obj = userService.update(id, user);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @Valid @RequestBody UserRequestDTO user){
+        UserResponseDTO userResponseDTO = userService.update(id, user);
+        return ResponseEntity.ok().body(userResponseDTO);
     }
 
 }
