@@ -1,5 +1,7 @@
 package org.Pazano.VirtualBank.resource;
 
+import jakarta.validation.Valid;
+import org.Pazano.VirtualBank.dto.AccountRequestDTO;
 import org.Pazano.VirtualBank.dto.AccountResponseDTO;
 import org.Pazano.VirtualBank.entities.Account;
 import org.Pazano.VirtualBank.service.AccountService;
@@ -18,36 +20,29 @@ import java.util.List;
 public class AccountResource {
 
     @Autowired
-    private AccountService AccountService;
+    private AccountService accountService;
 
     @GetMapping
     public ResponseEntity<List<AccountResponseDTO>> findAll() {
-        List<AccountResponseDTO> list = AccountService.findAll();
+        List<AccountResponseDTO> list = accountService.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Account> findById(@PathVariable Long id) {
-        Account account = AccountService.findById(id);
+    public ResponseEntity<AccountResponseDTO> findById(@PathVariable Long id) {
+        AccountResponseDTO account = accountService.findById(id);
         return ResponseEntity.ok().body(account);
     }
 
     @PostMapping
-    public ResponseEntity<Account> insert(@RequestBody Account ac) throws InsufficientBalanceException {
-        Account account = AccountService.insert(ac);
-        return ResponseEntity.ok().body(ac);
+    public ResponseEntity<AccountResponseDTO> insert(@Valid @RequestBody AccountRequestDTO ac) throws InsufficientBalanceException {
+        AccountResponseDTO account = accountService.insert(ac);
+        return ResponseEntity.ok().body(account);
     }
 
     @DeleteMapping
-    public ResponseEntity<Account> delete(@PathVariable Long id) throws InsufficientBalanceException {
-        AccountService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) throws InsufficientBalanceException {
+        accountService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
-    @PutMapping
-    public ResponseEntity<Account> update(@PathVariable Long id, @RequestBody Account acc) throws InsufficientBalanceException{
-        AccountService.update(id, acc);
-        return ResponseEntity.ok().body(acc);
-    }
-
 }

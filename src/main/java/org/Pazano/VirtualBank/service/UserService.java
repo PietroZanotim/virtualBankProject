@@ -77,7 +77,7 @@ public class UserService {
             return new UserResponseDTO(
                     id,
                     selected.getName(),
-                    selected.getEmail(),
+                    selected.getCpf(),
                     selected.getEmail(),
                     selected.getAge()
             );

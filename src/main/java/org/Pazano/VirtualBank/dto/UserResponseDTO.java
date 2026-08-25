@@ -11,11 +11,11 @@ public class UserResponseDTO {
     public UserResponseDTO() {
     }
 
-    public UserResponseDTO(Long id, String name, String email, String cpf, String age) {
+    public UserResponseDTO(Long id, String name,String cpf, String email, String age) {
         this.id = id;
         this.name = name;
-        this.email = email;
         this.cpf = cpf;
+        this.email = email;
         this.age = age;
     }
 

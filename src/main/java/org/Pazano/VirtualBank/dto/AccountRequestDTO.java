@@ -1,21 +1,36 @@
 package org.Pazano.VirtualBank.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class AccountRequestDTO {
 
-    private UserRequestDTO userRequestDTO;
+    @NotBlank(message = "cpf must exist")
+    private String cpf;
+    @NotBlank(message = "password must exist")
+    private String password;
 
     public AccountRequestDTO() {
     }
 
-    public AccountRequestDTO(UserRequestDTO userRequestDTO) {
-        this.userRequestDTO = userRequestDTO;
+    public AccountRequestDTO(String cpf, String password) {
+        this.cpf = cpf;
+        this.password = password;
     }
 
-    public UserRequestDTO getUserRequestDTO() {
-        return userRequestDTO;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setUserRequestDTO(UserRequestDTO userRequestDTO) {
-        this.userRequestDTO = userRequestDTO;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
