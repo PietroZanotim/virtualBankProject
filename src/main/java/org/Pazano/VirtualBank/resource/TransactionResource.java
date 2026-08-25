@@ -1,5 +1,6 @@
 package org.Pazano.VirtualBank.resource;
 
+import jakarta.validation.Valid;
 import org.Pazano.VirtualBank.dto.TransactionRequestDTO;
 import org.Pazano.VirtualBank.dto.TransactionResponseDTO;
 import org.Pazano.VirtualBank.entities.Account;
@@ -25,19 +26,19 @@ public class TransactionResource {
     private TransactionService transactionService;
 
     @GetMapping
-    public ResponseEntity<List<Transaction>> findAll() {
-        List<Transaction> list = transactionService.findAll();
+    public ResponseEntity<List<TransactionResponseDTO>> findAll() {
+        List<TransactionResponseDTO> list = transactionService.findAll();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Transaction> findById(@PathVariable Long id) {
-        Transaction transaction = transactionService.findById(id);
+    public ResponseEntity<TransactionResponseDTO> findById(@PathVariable Long id) {
+        TransactionResponseDTO transaction = transactionService.findById(id);
         return ResponseEntity.ok().body(transaction);
     }
 
     @PostMapping
-    public ResponseEntity<TransactionResponseDTO> insert(@RequestBody TransactionRequestDTO obj) throws InsufficientBalanceException {
+    public ResponseEntity<TransactionResponseDTO> insert(@Valid @RequestBody TransactionRequestDTO obj) throws InsufficientBalanceException {
         TransactionResponseDTO dtoResponse = transactionService.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dtoResponse.getTransactionId()).toUri();

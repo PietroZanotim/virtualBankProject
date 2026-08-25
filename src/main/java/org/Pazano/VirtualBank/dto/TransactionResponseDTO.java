@@ -6,6 +6,7 @@ import java.time.Instant;
 public class TransactionResponseDTO {
 
     private Long transactionId;
+    private String senderName;
     private String receiverName;
     private BigDecimal total;
     private Instant data;
@@ -13,8 +14,9 @@ public class TransactionResponseDTO {
     public TransactionResponseDTO() {
     }
 
-    public TransactionResponseDTO(Long transactionId, String receiverName, BigDecimal total, Instant data) {
+    public TransactionResponseDTO(Long transactionId,String senderName, String receiverName, BigDecimal total, Instant data) {
         this.transactionId = transactionId;
+        this.senderName = senderName;
         this.receiverName = receiverName;
         this.total = total;
         this.data = data;
@@ -34,6 +36,14 @@ public class TransactionResponseDTO {
 
     public void setReceiverName(String receiverName) {
         this.receiverName = receiverName;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
     }
 
     public BigDecimal getTotal() {

@@ -1,14 +1,25 @@
 package org.Pazano.VirtualBank.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.Pazano.VirtualBank.entities.enums.TransactionType;
+
 
 import java.math.BigDecimal;
 
 public class TransactionRequestDTO {
 
+    @NotNull(message = "Id cant be null.")
     private Long senderAccountId;
+
+    @NotNull(message = "Value cant be null.")
+    @Positive(message = "Value must be positive.")
     private BigDecimal total;
+
+    @NotBlank(message = "Cpf is necessary.")
     private String receiverCpf;
+
     TransactionType transactionType;
 
     public TransactionRequestDTO() {

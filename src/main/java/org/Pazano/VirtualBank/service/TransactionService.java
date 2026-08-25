@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.naming.InsufficientResourcesException;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,13 +33,35 @@ public class TransactionService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public List<Transaction> findAll() {
-        return transactionRepository.findAll();
+    public List<TransactionResponseDTO> findAll() {
+        List<Transaction> list = transactionRepository.findAll();
+        List<TransactionResponseDTO> listResponseDto = new ArrayList<>();
+        for(Transaction t : list) {
+            TransactionResponseDTO responseDtoTemp = new TransactionResponseDTO(
+                    t.getId(),
+                    t.getSenderAccount().getUser().getName(),
+                    t.getReceiverName(),
+                    t.getTotal(),
+                    t.getData()
+            );
+            listResponseDto.add(responseDtoTemp);
+        }
+        return listResponseDto;
     }
 
-    public Transaction findById(Long id) {
-        Optional<Transaction> obj = transactionRepository.findById(id);
-        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+    public TransactionResponseDTO findById(Long id) {
+        Optional<Transaction> objOptinal = transactionRepository.findById(id);
+        if(objOptinal.isEmpty()) throw new ResourceNotFoundException(id);
+
+        Transaction obj = objOptinal.get();
+        TransactionResponseDTO transactionResponseDTO = new TransactionResponseDTO(
+                obj.getId(),
+                obj.getSenderAccount().getUser().getName(),
+                obj.getReceiverName(),
+                obj.getTotal(),
+                obj.getData()
+        );
+        return transactionResponseDTO;
     }
 
     @Transactional
@@ -50,10 +73,6 @@ public class TransactionService {
         //Insufficient balance
         if(senderAccount.getBalance().compareTo(transactionRequestDTO.getTotal())<0) {
             throw new InsufficientBalanceException("Insufficient balance!");
-        }
-        //Negative value
-        if(transactionRequestDTO.getTotal().compareTo(BigDecimal.ZERO)<0) {
-            throw new IllegalArgumentException("Negative value!");
         }
         //Same account sender and receiver
         if(transactionRequestDTO.getReceiverCpf().equals(senderAccount.getUser().getCpf())){
@@ -82,6 +101,7 @@ public class TransactionService {
 
         TransactionResponseDTO transactionResponseDTO = new TransactionResponseDTO(
                 transactionDatabase.getId(),
+                senderAccount.getUser().getName(),
                 accountReceiver.getUser().getName(),
                 transactionRequestDTO.getTotal(),
                 transactionDatabase.getData()
