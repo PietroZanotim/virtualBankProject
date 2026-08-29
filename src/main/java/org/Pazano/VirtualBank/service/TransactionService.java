@@ -67,7 +67,7 @@ public class TransactionService {
     @Transactional
     public TransactionResponseDTO insert(TransactionRequestDTO transactionRequestDTO) throws InsufficientBalanceException {
 
-        Account senderAccount = accountRepository.findById(transactionRequestDTO.getSenderAccountId())
+        Account senderAccount = accountRepository.findByIdWithLock(transactionRequestDTO.getSenderAccountId())
                 .orElseThrow(() -> new ResourceNotFoundException("Sender account not found."));
 
         //Insufficient balance
@@ -81,10 +81,9 @@ public class TransactionService {
 
         senderAccount.withdraw(transactionRequestDTO.getTotal()); //withdraw the value;
 
-        User user = userRepository.findByCpf(transactionRequestDTO.getReceiverCpf())
-                .orElseThrow(() -> new ResourceNotFoundException("Receiver not found."));
+        Account accountReceiver = accountRepository.findByUserCpfWithLock(transactionRequestDTO.getReceiverCpf())
+                        .orElseThrow(() -> new ResourceNotFoundException("Receiver not found."));
 
-        Account accountReceiver = user.getAccount();
         accountReceiver.deposit(transactionRequestDTO.getTotal());
 
         Transaction transactionDatabase = new Transaction(null,
